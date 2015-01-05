@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>CS162 Labs - Lab 0: GNU/Linux Development Environment and Workflow</title>
+        <link rel="stylesheet" type="text/css" href="../css/default.css" />
+    </head>
+    <body>
+        <div id="header">
+            <div id="logo">
+                <a href="../">CS162 Labs</a>
+            </div>
+            <div id="navigation">
+                <a href="../">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../contact.html">Contact</a>
+                <a href="../archive.html">Archive</a>
+            </div>
+        </div>
+
+        <div id="content">
+            <h1>Lab 0: GNU/Linux Development Environment and Workflow</h1>
+
+            <div class="info">
+    Posted on January  5, 2015
+    
+</div>
+
+<p>This lab is to help you get setup working on future labs this means creating a development environment and a development workflow. By <em>development environment</em> I mean a collection of computer programs that will enable you to write, test, and submit your labs. By <em>work flow</em> I mean a high-level description of what programs to use and in what sequence to use them in order to successfully complete your labs. There is no required submission for this lab, but you will be expected to understand how to use version control (and in particular <code>svn</code>) in future labs. The presentation in this writeup is focused on the GNU/Linux development so that you can work on the <a href="http://csil.cs.uchicago.edu/">CSIL</a> lab computers. The code and setup will work on OS X with minor modification, and will work on Cygwin with considerable and frustrating modifications (as Kurtz says: if you are using Windows you are probably already used to this).</p>
+<p>Your repository for this class may be viewed at</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">https</span>://phoenixforge.cs.uchicago.edu/svn/cnetid-cs162-win-15</code></pre>
+<p>and that repository is your existence as far as laboratory submissions go. I will discuss in later sections of this lab how to use <code>svn</code> so that your digital personae match your work on your individual machines (which is important for me to give you your hard-earned grades).</p>
+<p>The following notes are based on those from <a href="https://class.coursera.org/startup-001/wiki/week2">Stanford’s startup engineering course</a>.</p>
+<p>The tools we discuss in this lab are:</p>
+<ul>
+<li><code>ssh</code></li>
+<li><code>bash</code> (already discussed in lecture)</li>
+<li><code>screen</code></li>
+<li><code>emacs</code></li>
+<li><code>svn</code></li>
+</ul>
+<p>The most important section is <code>svn</code>, the others are tools that I find useful when I develop software and give a complete model of how to work on the machines. This lab is also meant to serve as a partial reference and guide for you as the quarter progresses and I will update it based on the questions I receive in class. The class wiki is an excellent place for you guys to write up your own notes on tools. A tool write-up need not be long but should simply help a user (at least yourself) solve a specific problem you encountered.</p>
+<p>On a more general note, this is an honors introduction to programming so we take as an assumption that you have set yourself upon a path towards mastery of the discipline. The lab is an opportunity for you to refine your craft on medium-sized projects where you will likely write several drafts of the same program (indeed, a several draft program is the code maturity level that we look for when grading). Homework is likely to be programs that you write with one draft and some careful thinking.<br />You will need to draft many versions of your final project and it will require signficant iterative design, testing, and experimentation. I am excited for you and cannot wait to do my part to assist you on your journey!</p>
+<h1 id="ssh"><code>ssh</code></h1>
+<p><code>ssh</code> allows you to connect and interact with a command line interface (CLI) on a remote machine. It was first released in July of 1995 by Tatu Ylönen to increase the security and confidentiality of remote computer connections (previously people were using <code>rlogin</code>, <code>TELNET</code>, and <code>rsh</code>). We discuss the <code>bash</code> CLI in the next section, and in this section we will describe how to securely log into the school machines so that you may begin working.</p>
+<h3 id="role-in-your-development-workflow">Role in your development workflow</h3>
+<p>Since you will often be working on your laptops or some other computer other than the lab computers your first step in your development workflow will be to log into a lab machine (discussed in the next section). After logging into the machine with <code>ssh</code> you will work with the other tools discussed in this writeup and then you can exit <code>ssh</code> by typing <code>[Ctrl-D]</code> or simply closing your terminal program (e.g. <code>Terminal.app</code> or <code>xterm</code>).</p>
+<h3 id="using-ssh-on-university-administered-machines">Using <code>ssh</code> on University-administered machines</h3>
+<p>A list of the machines you can log into is maintained <a href="http://people.cs.uchicago.edu/~kauffman/techstaff/sshable-machines.txt">here</a> but the preference (as noted in the list) is for you to run</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ssh</span> cnet-id@linux.cs.uchicago.edu</code></pre>
+<p>which should be your first choice for shell access. Here <code>cnet-id</code> should be replaced with your University of Chicago <code>cnet-id</code> (mine is <code>stoehr</code>) and you will be prompted for a password (which will be your University-wide cnet password). If it is your first time logging into a particular machine you will be prompted with something like:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">The</span> authenticity of host <span class="st">'linux.cs.uchicago.edu (128.135.164.172)'</span> can<span class="st">'t be established.</span>
+<span class="st">ECDSA key fingerprint is fc:41:8b:d1:1c:66:2a:f5:5b:35:76:b0:d2:a1:37:f1.</span>
+<span class="st">Are you sure you want to continue connecting (yes/no)?</span></code></pre>
+<p>this is a message indicating that this is the first time that you have logged into this server identified by the fingerprint</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">fc</span>:41:8b:d1:1c:66:2a:f5:5b:35:76:b0:d2:a1:37:f1</code></pre>
+<p>If you are paranoid then you can contact techstaff (or log onto the physical machine) to verify that the fingerprint matches what is on record to protect against a <a href="http://en.wikipedia.org/wiki/Man-in-the-middle_attack">man-in-the-middle-attack</a>. The standard response to this message is to simply type <code>yes</code> and press <code>[return]</code> and you’ll see something like</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">The</span> authenticity of host <span class="st">'linux.cs.uchicago.edu (128.135.164.172)'</span> can<span class="st">'t be established.</span>
+<span class="st">ECDSA key fingerprint is fc:41:8b:d1:1c:66:2a:f5:5b:35:76:b0:d2:a1:37:f1.</span>
+<span class="st">Are you sure you want to continue connecting (yes/no)? yes</span>
+<span class="st">Warning: Permanently added '</span>linux.cs.uchicago.edu,128.135.164.172<span class="st">' (ECDSA) to the list of known hosts.</span>
+<span class="st">Welcome to Ubuntu 12.04.3 LTS (GNU/Linux 3.8.0-39-generic x86_64)</span></code></pre>
+<p>You’ll then have a prompt indicating that you have remote access to <code>linux.cs.uchicago.edu</code></p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">stoehr@linux2</span>:~$</code></pre>
+<p>By answering yes the fingerprint of the machine has been added as a hash to your <code>$HOME/.ssh/known_hosts</code> file on your local machine. You can log off the remote machine by typing <code>[Ctrl-d]</code> and then check the host key with</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ssh-keygen</span> -l -f linux.cs.uchicago.edu</code></pre>
+<p>which will output something like (note the following is not real)</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">256</span> fc:41:8b:d1:1c:66:2a:f5:5b:35:76:b0:d2:a1:37:f1 <span class="kw">|1|uER74gI2QE1QX1MmLD+P9lWNmvU</span>=<span class="kw">|</span><span class="ot">YtMUmBb0ApLnGqhFg1UXORQa8hS=</span> <span class="kw">(ECDSA)</span></code></pre>
+<p>and the fingerprints should match. The fingerprint allows you to verify that the machine you think you are logging into is in fact the machine you are communicating with. An imposter machine, due to the mathematics of public cryptography, would have compromise your desired remote machine in order to fake the fingerprint. This provides your login credentials some security because you enter them after you have verified the fingerprint. Usually <code>ssh</code> performs this check without informing the user, but you can see all the details by running</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ssh</span> -v cnet-id@linux.cs.uchicago.edu</code></pre>
+<p>Since you all should have a computer science account you will already have a user name and home directory setup on those machines. The techstaff-administered department of computer science machines all have shared file systems so logging into any particular computer will give you access to a single file system and any work done on one system will be shared across all the others.</p>
+<p>To make your login more secure it is advised to setup some <code>ssh</code> keys so that you can identify yourself to the remote computer using <a href="http://en.wikipedia.org/wiki/Public-key_cryptography">public-key cryptography</a> and <a href="http://en.wikipedia.org/wiki/Challenge%E2%80%93response_authentication">challenge-response authentication</a>. Using <code>ssh</code> keys means you will not have to type a password each time you log into the machine and can make your connection more secure since you do not enter in your login credentials for imposters to potentially steal.</p>
+<h3 id="ssh-keys"><code>ssh</code> keys</h3>
+<p>A simplified procedure to setting up your <code>ssh</code> keys is</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">mkdir</span> ~/.ssh      <span class="co"># make a directory to store your ssh profile</span>
+<span class="kw">chmod</span> 700 ~/.ssh  <span class="co"># set the permissions</span>
+<span class="kw">ssh-keygen</span> -t rsa</code></pre>
+<p>(note that <code>#</code> begins a comment so everything past it is ignored) and you will create an ssh public key in <code>~/.ssh/id_rsa.pub</code> and identification in <code>~/.ssh/id_rsa</code>. Some users don’t use a passphrase but doing so always provides better security. The passphrase itself is never transmitted over the internet. You then create a copy of the authorized key on the remote computer</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ssh-copy-id</span> cnet-id@linux.cs.uchicago.edu</code></pre>
+<p>and then you should be able to <code>ssh</code> into any of the University of Chicago machines without entering in your password each time. More details are <a href="https://help.ubuntu.com/community/SSH/OpenSSH/Keys">here</a> and <a href="https://help.github.com/articles/generating-ssh-keys">here</a>.</p>
+<h1 id="bash"><code>bash</code></h1>
+<p>Before I offer my condensed presentation I note that <code>bash</code> is best learned by doing and <a href="http://cli.learncodethehardway.org/book/">The Command Line Crash Course</a> is an excellent introduction for learning the command line.</p>
+<p><code>bash</code> gives the user a command line interface to run programs in their computer’s operating system. An operating system manages the processes which control the instructions run on the processor. The command line interface allows the user to create, kill, modify, and manage those processes with a high-level interface (using the keyboard and monitor) that avoids low-level assembly language. The data stored and modified by these processes are stored as bits in memory using the computer’s file system. Processes are created using <em>commands</em> or programs whose instructions are stored as files in the file system. Thus, to understand the command-line interface we need to understand file systems. Note that our description is limited and gives a much simplified view: the reality of file system design is significantly messier.</p>
+<p>A file is a finite sequence of bits (zeros and ones) with an <em>address</em>, a <em>file size</em> indicating how long the sequence is, and potentially other metadata (such as who has permission to edit, read, or execute the file). A file has two types of addresses: a physical address indicating a location on physical hardware where the bits of the file are stored, and a key called a <em>path</em> which the file system associates with the physical address. The path of your public-key file <code>id_rsa.pub</code> on the department machines, for instance, will usually be <code>/home/cnet-id/.ssh/id_rsa.pub</code>. The Ubuntu file system on the machine can map that path address to a physical location on the storage media holding the sequence of bits describing your key. The physical address is hardware dependent because it is tied to an actual machine The path, however, is hardware independent which is useful for shared file systems because it means that on any computer you can use the same path <code>/home/cnet-id/.ssh/id_rsa.pub</code> to refer to the same file on different machines.</p>
+<p>The file system keeps track of the address space (set of all possible physical addresses) on the local machine and access permissions for all files contained in the system. There are two types of files we will consider in this simplified presentation: <em>regular files</em> and <em>directories</em>. A regular file is a file with no other special characteristics in the file system. A <em>directory</em> for our purposes is a special file whose finite sequence of bits contains the addresses of other files. In our simplified setup each file, except root, <code>/</code>, has a unique directory which points to the file. A file <code>foo</code> is said to be <em>contained</em> in a directory <code>foodir</code> when the <code>foodir</code> contains the physical address, name, size, and other data of the file <code>foo</code>. The path address of <code>foo</code> in the file system will then be <code>path-to-foodir/foodir/foo</code> in Unix-like systems. We say that <code>foodir</code> is the <em>parent directory</em> of <code>foo</code>. This directory structure gives the file system a natural hierarchical tree structure. There is a root directory <code>/</code> and every other file in the file system has a unique parent directory.</p>
+<p>The command line interface is operated by typing keys on your keyboard. Many of them will display on the command line as you type them and certain special keys instruct the CLI how to interpret your input. Chief among these is <code>[return]</code> which is a control operator that signals the interpreter to store the command appearing at the current line in the input queue. Commands in the input queue are either ill-formed and throw an error or are executed by the terminal which will often mean starting a new process. The basic commands most useful for this course correspond utilities provided by the terminal and to programs stored in the file system (usually in <code>/usr/bin</code>) that are executed by the operating system. They are:</p>
+<ul>
+<li>pwd</li>
+<li>hostname</li>
+<li>mkdir</li>
+<li>cd</li>
+<li>ls</li>
+<li>rmdir</li>
+<li>touch</li>
+<li>cp</li>
+<li>mv</li>
+<li>less</li>
+<li>cat</li>
+<li>rm</li>
+</ul>
+<p>The current open standard for Shell utilities <a href="http://pubs.opengroup.org/onlinepubs/9699919799/">is available from the Open Group</a>. It explains in great detail what to expect in a POSIX (said ‘paws-icks’) shell. This document is a good one to read since you will be potentially using something similar to what it describes for the rest of your life. It is very useful for understand how the shell behaves in corner cases and also developing a vocabulary to talk about observed phenomena in the shell.</p>
+<h1 id="screen"><code>screen</code></h1>
+<p>Screen is like a web browser for <code>ssh</code> because it allows you to have separate command line sessions using a tab system and you can recover your tabs. There is an <a href="http://www.ibm.com/developerworks/aix/library/au-gnu_screen/">excellent tutorial</a> you can work through and I have included a custom <a href="../fls/.screenrc">.screenrc</a> file to save to your <code>$HOME</code> directory which will make <code>screen</code> play nice with <code>emacs</code> among other things.</p>
+<h1 id="emacs"><code>emacs</code></h1>
+<p>This is the suggested text editor. The properties that <code>emacs</code> satisfies (as well as <code>vim</code>) which no other text editors satisfy are</p>
+<ul>
+<li>free</li>
+<li>open-source</li>
+<li>highly configurable</li>
+<li>large dev community</li>
+<li>editing modes for virtually every language</li>
+<li>external tool integration</li>
+<li>ultra cross platform</li>
+<li>embeddable in other programs</li>
+<li>fast boot time</li>
+<li>lightweight memory footprint</li>
+</ul>
+<h1 id="svn"><code>svn</code></h1>
+<p>The authoritative reference and tutorial on <a href="http://subversion.apache.org/">Apache Subversion</a> is the <a href="http://svnbook.red-bean.com/">Version Control with Subversion</a>. You do not need to master the book in its entirety but I suggest you read Chapter 3 to get a feel for developing your workflow.</p>
+<p>Subversion keeps track of a file system called your <em>repository</em> which has an address</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">https</span>://phoenixforge.cs.uchicago.edu/svn/cnetid-cs162-win-15</code></pre>
+<p>and may be viewed at</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">https</span>://phoenixforge.cs.uchicago.edu/projects/cnetid-cs162-win-15/repository</code></pre>
+<p>Subversion performs two functions with this file system:</p>
+<ul>
+<li>keep it synchronized across multiple computers</li>
+<li>stores the revision history for all files in the file system</li>
+</ul>
+<p>Subversion does this by keeping storing a master version of the repository on a server and providing commands to synchronize it with local copies on other machines. In order for your local machine to store the respository Subversion creates a subtree of files and folders within your local filesystem–this allows Subversion to rely on the local file system to manage the physical bit storage of the data. You can use <code>svn</code> to create a copy of the repository on your local machine which will be a folder titled <code>cnetid-cs162-win-15</code> somewhere in your local filesystem. To do this run</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">stoehr</span>:~$ svn checkout https://phoenixforge.cs.uchicago.edu/svn/cnetid-cs162-win-15</code></pre>
+<p>which will also prompt you for your password. Note that the example command above is run at the prompt <code>stoehr:~$</code> which indicates that the command is being run from the location <code>~</code> which is a synonym for the environment variable <code>HOME</code>. So, running the above command will place the root of the repository tree at <code>$HOME/cnetid-cs162-win-15</code>. If I wanted to put the repository at a different address within my local file system I would run the command from a different location (there are other ways of achieving it as well).</p>
+<p>An important conceptual note is that the file system of your repository is distinct from the file system on your local machine. <code>svn</code> can be seen as a tool that keeps these two file systems synchronized which suggests two fundamental types of operations: those that change the repository to match the local file system and operations that change the local file system to match the repository. <code>svn checkout</code> is an example of the former and it creates a new set of files and folders. These operations necessarily include creating new files, changing file contents, and deleting files (e.g. creating a <code>lab4</code> directory and putting code into a <code>main.c</code> file).</p>
+<p>One of the main problems that <code>svn</code> has to solve is that it should not delete or modify files from your file system that are not part of the repository (e.g. you would not want your cs162 homework deleted by an overly zealous <code>svn</code>). Similarly, <code>svn</code> when it updates the Subversion repository should not copy over all your filesystem’s files (e.g. you want to keep your passwords safe and not take up too much space in the Subversion file system). <code>svn</code> is, thus, only given limited permissions by the users to create and delete files, and <code>svn</code> marks which folders on the local file system correspond to the repository file system (this handles the potential problem that your local file system may have a folder with the same name as a repository folder and you may not want the repository making modifications to your local folder). A marked regular file or directory is called a <em>working copy</em> and <code>svn</code> also has utilities for looking at all previous versions of that file in the repository. All directories that are working copies have a <code>.svn</code> directory contained in them called the <em>administrative directory</em> that keeps track of which files are working copies and file version information. Any regular file that is a working copy must be contained in a working copy directory and then version information about the file is stored in that directory’s administrative directory.</p>
+<p>Each file in the repository has a current version. <code>svn</code> synchronizes between the repository and local file systems by either updating a local working copy to match the repository current version or by modifying the repository current version to reflect the changes in the local working copy. The command to do the former is <code>svn update</code> and that is how you will receive grades in the class. The command to modify the repository is <code>svn commit</code> and that is how you will submit your lab assignments. A working copy file can be in one of four states:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>No local changes, and current</strong>. In this case <code>svn commit</code> will do nothing, and <code>svn update</code> will do nothing</p></li>
+<li><p><strong>Locally changed, and current</strong>. In this case <code>svn commit</code> will publish the local changes to the central respository, <code>svn update</code> will do nothing, <code>svn revert</code> reverts local changes to the public version.</p></li>
+<li><p><strong>Unchanged, and out of date (or non-existant)</strong>. In this case <code>svn commit</code> will do nothing but <code>svn update</code> will fold the latest repository version to the local working copy.</p></li>
+<li><p><strong>Locally changed, and out of date</strong>. This is not good <code>svn commit</code> will fail and <code>svn update</code> will attempt to merge the public changes with the local changes. If Subversion can’t do the merge then it leaves the user to resolve the conflict. To do this use the <code>svn resolve</code> command: (<code>svn resolve --accept 'working'</code> just accepts the working copy version–check the documentation for more info).</p></li>
+</ol>
+<p>We need to establish the basic file system commands for your Subversion repository. The command <code>svn add foo</code> makes <code>foo</code> a working copy. If <code>foo</code> is a directory then every file in <code>foo</code> is made a working copy. If <code>foo</code> is a regular file then the parent directory of <code>foo</code> must also be a working copy or <code>svn add</code> will return an error. <code>svn delete foo</code> schedules a working copy file <code>foo</code> for deletion upon the next <code>svn commit</code> operation. <code>svn copy foo_src foo_dst</code> performs a local copy operation and schedules a repository copy operation for the next commit. <code>svn move foo_src foo_dst</code> schedules a move operation (copy and delete) for the next commit.</p>
+<p>The goal of all of this is to enable you to write code on your local machine and publish versions as you write so that as you write new drafts you can easily look at older versions and so that I can see the changes you are making as well as your final submission.</p>
+<h3 id="svn-workflow"><code>svn</code> workflow</h3>
+<p>The suggested Subversion workflow is:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Update your working copy</strong>: use <code>svn update</code> so working copy files are at the public version. This prevents <em>locally changed and out of date</em> from happening as long as it is just you writing the code.</p></li>
+<li><p><strong>Make your changes</strong>: do the assignment and write code. Make sure that any new files or folders that you want to be in your respository are made into working copies by running <code>svn add</code>. You should also interact with the repository file system with <code>svn delete</code>, <code>svn copy</code>, and <code>svn move</code> operations during this phase.</p></li>
+<li><p><strong>Review your changes</strong>: using <code>svn status</code> and <code>svn diff</code> you can view the changes made to your working copy.</p></li>
+<li><p><strong>Fix your mistakes</strong>: If you want to remove a change that was made run <code>svn revert</code></p></li>
+<li><p><strong>Resolve any conflicts</strong>: Run <code>svn update</code>, if there are any conflicts (usually their won’t be since it is just your repository) you may have to run <code>svn resolve</code>.</p></li>
+<li><p><strong>Commit your changes to your repository</strong>: run <code>svn commit</code>.</p></li>
+</ol>
+
+        </div>
+        <div id="footer">
+            Site proudly generated by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        </div>
+    </body>
+</html>
