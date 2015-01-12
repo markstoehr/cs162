@@ -42,7 +42,7 @@
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">svn</span> commit -m <span class="st">&quot;update&quot;</span></code></pre>
 <p>frequently as you work on the lab so that you will definitely have a submission come the midnight deadline. Late submissions are not accepted: the time-stamp counts.</p>
 <h2 id="writing-and-running-shell-scripts">Writing and running shell scripts</h2>
-<p>A good resource is the <a href="http://www.tldp.org/LDP/abs/html/">Advanced Bash-Scripting Guide</a></p>
+<p>A good resource is the <a href="http://www.tldp.org/LDP/abs/html">Advanced Bash-Scripting Guide</a>/</p>
 <p>In class you have now had some exposure to bash commands. In this lab we will present you with several problems to solve using bash scripts to get you comfortable working in bash. These scripts should all have a preamble to help make them more useful. The main exercise today will get you working with <code>bash</code> arrays and string processing utilities.</p>
 <p>Bash scripting is about constructing your own commands that can be used on your system. For example:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cat</span> <span class="kw">&gt;</span> qed_echo.sh
@@ -69,12 +69,12 @@
 <span class="co">#  Display QED.</span>
 <span class="co">#</span></code></pre>
 <p>Scripts can also easily take command arguments. So the script above can be modified to take an argument by writing:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">echo</span> <span class="st">&quot;Quod era demonstrandum, </span><span class="ot">$1</span><span class="st">!&quot;</span></code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">echo</span> <span class="st">&quot;Quod erat demonstrandum, </span><span class="ot">$1</span><span class="st">!&quot;</span></code></pre>
 <p>Although what happens if we don’t include an argument? We want the script to gracefully handle that case so we include a conditional</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">if [[</span> <span class="ot">$#</span> <span class="ot">-eq</span>  0<span class="kw"> ]]</span>; <span class="kw">then</span>
     <span class="kw">echo</span> <span class="st">&quot;Quod erat demonstrandum!&quot;</span>
 <span class="kw">else</span>
-    <span class="kw">echo</span> <span class="st">&quot;Quod era demonstrandum, </span><span class="ot">$1</span><span class="st">!&quot;</span>
+    <span class="kw">echo</span> <span class="st">&quot;Quod erat demonstrandum, </span><span class="ot">$1</span><span class="st">!&quot;</span>
 <span class="kw">fi</span></code></pre>
 <p>Sometimes in <code>bash</code> we wish to perform a <code>map</code>-like operation over a “subtree” of the file system (remember the file system is not exactly a tree). This can be done by carefully studying what <code>ls</code> does and using bash control structures. There are other approaches including recursion (although that can lead to a “segfault” if there are too many levels to the recursion). Google is your friend for <code>bash</code> utilities. This leads to exercise 1:</p>
 <ol style="list-style-type: decimal">
