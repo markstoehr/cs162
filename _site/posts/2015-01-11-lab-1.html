@@ -35,13 +35,14 @@
 <span class="kw">mkdir</span> lab1
 <span class="kw">svn</span> add lab1     <span class="co"># make it a working copy</span>
 <span class="kw">cd</span> lab1
-<span class="kw">mkdir</span> README     <span class="co"># README is now a working copy</span>
+<span class="kw">touch</span> README     <span class="co"># README is now a working copy</span>
 <span class="kw">svn</span> add README</code></pre>
 <p>and then you can start working.</p>
 <p>You get two 24-hour lab extensions this quarter, email me: [my last name] <code>at</code> cs <code>dot</code> uchicago <code>dot</code> edu for them. Make sure that you run</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">svn</span> commit -m <span class="st">&quot;update&quot;</span></code></pre>
 <p>frequently as you work on the lab so that you will definitely have a submission come the midnight deadline. Late submissions are not accepted: the time-stamp counts.</p>
 <h2 id="writing-and-running-shell-scripts">Writing and running shell scripts</h2>
+<p>A good resource is the <a href="http://www.tldp.org/LDP/abs/html/">Advanced Bash-Scripting Guide</a></p>
 <p>In class you have now had some exposure to bash commands. In this lab we will present you with several problems to solve using bash scripts to get you comfortable working in bash. These scripts should all have a preamble to help make them more useful. The main exercise today will get you working with <code>bash</code> arrays and string processing utilities.</p>
 <p>Bash scripting is about constructing your own commands that can be used on your system. For example:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cat</span> <span class="kw">&gt;</span> qed_echo.sh
