@@ -27,6 +27,20 @@
     
 </div>
 
+<h1 id="lab-submission-instructions">Lab Submission instructions</h1>
+<p>Checkout your subversion directory:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">svn</span> co https://phoenixforge.cs.uchicago.edu/svn/cnetid-cs162-win-15</code></pre>
+<p>and create a directory for Lab 1</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cd</span> cnetid-cs162-win-15
+<span class="kw">mkdir</span> lab1
+<span class="kw">svn</span> add lab1     <span class="co"># make it a working copy</span>
+<span class="kw">cd</span> lab1
+<span class="kw">mkdir</span> README     <span class="co"># README is now a working copy</span>
+<span class="kw">svn</span> add README</code></pre>
+<p>and then you can start working.</p>
+<p>You get two 24-hour lab extensions this quarter, email me: [my last name] <code>at</code> cs <code>dot</code> uchicago <code>dot</code> edu for them. Make sure that you run</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">svn</span> commit -m <span class="st">&quot;update&quot;</span></code></pre>
+<p>frequently as you work on the lab so that you will definitely have a submission come the midnight deadline. Late submissions are not accepted: the time-stamp counts.</p>
 <h2 id="writing-and-running-shell-scripts">Writing and running shell scripts</h2>
 <p>In class you have now had some exposure to bash commands. In this lab we will present you with several problems to solve using bash scripts to get you comfortable working in bash. These scripts should all have a preamble to help make them more useful. The main exercise today will get you working with <code>bash</code> arrays and string processing utilities.</p>
 <p>Bash scripting is about constructing your own commands that can be used on your system. For example:</p>
@@ -61,17 +75,20 @@
 <span class="kw">else</span>
     <span class="kw">echo</span> <span class="st">&quot;Quod era demonstrandum, </span><span class="ot">$1</span><span class="st">!&quot;</span>
 <span class="kw">fi</span></code></pre>
-<p>Sometimes in <code>bash</code> we wish to perform a <code>map</code>-like operation over a “subtree” of the file system (remember the file system is not exactly a tree). This can be done by carefully studying what <code>ls</code> does. Google is your friend for <code>bash</code> utilities. This leads to exercise 1:</p>
+<p>Sometimes in <code>bash</code> we wish to perform a <code>map</code>-like operation over a “subtree” of the file system (remember the file system is not exactly a tree). This can be done by carefully studying what <code>ls</code> does and using bash control structures. There are other approaches including recursion (although that can lead to a “segfault” if there are too many levels to the recursion). Google is your friend for <code>bash</code> utilities. This leads to exercise 1:</p>
 <ol style="list-style-type: decimal">
-<li><p><strong>Write a bash script that takes two arguments: a command and a file. If the file is a regular file then the command should be applied to the file. Otherwise, if the file is a directory then the script should check all the files in the directory and apply the command to all regular files and expand/apply to all directories. Call the script <code>fsmap.sh</code>.</strong> (Warning this is not safe or good practice for an actual shell script but its informative for you to learn how to do it).</p></li>
+<li><p><strong>Write a bash script that takes two arguments: a command and a file. If the file is a regular file then it should run the command and pass the file as an argument. If the file is a directory then the command should be applied to all regular files in the subtree rooted at the directory. Call the script <code>fsmap.sh</code>.</strong> (Warning this is not safe or good practice for an actual shell script but its informative for you to learn how to do it).</p></li>
 <li><p><strong>Write a script <code>list_contents.sh</code> that uses <code>fsmap.sh</code> to report the number of lines and words for all files within a subtree of the file system.</strong></p></li>
 </ol>
 <p>Another natural operation is a file system <code>fold</code> operation. You will find it useful to understand arithmetic expressions built from syntax like: <code>$(( ))</code> in <code>bash</code>:</p>
 <ol start="3" style="list-style-type: decimal">
-<li><p><strong>Write a script <code>fs_additive_fold.sh</code> that takes a command and a file as input. It shall recurse over the subtree that has the file as root (which will be a single file if the file is not a directory or link). The command is assumed to take a single file as input and output a number. The script should apply the command to all regular files in the subtree and add their outputs.</strong></p></li>
+<li><p><strong>Write a script <code>fs_additive_fold.sh</code> that takes a command and a file as input. It shall recurse over the subtree that has the file as root (which will be a single file if the file is not a directory or link). The command is assumed to take a single file as input and output a number. For every regular file in the subtree rooted at the input file, get the numbers they output and add them.</strong></p></li>
 <li><p><strong>Write a script <code>disk_usage.sh</code> which takes a file as input and outputs the total number of kilobytes used by that file or directory using <code>fs_additive_fold.sh</code>. Compare its output to what you get with <code>du</code> (and the correct flags: read the <code>man</code> page). Use <code>time</code> to profile their execution speeds on a system of directories (say your home directory on the lab machine) and put the outputs of <code>time</code> into your lab writeup <code>README</code> file included in your submission.</strong></p></li>
 </ol>
-<p>One issue with the above files is that they might run into cycles through symbolic links: see the command <code>ln</code>.</p>
+<p>One issue with the above files is that they might run into problems due to symbolic links: see the command <code>ln</code>.</p>
+<ol start="5" style="list-style-type: decimal">
+<li><strong>In the <code>README</code> file describe the problem that symbolic links can create. Make a small set of directories and other files that breaks the above scripts. Describe the directories you created in the <code>README</code> file. Use <code>find</code> to detect the problem and adjust the your scripts to include the check and give an informative error message should a directory fail the check. Save these new scripts with a <code>_check</code> suffix to indicate the update. Profile the performance of these scripts compared to the previous ones and report the performance in your <code>README</code> file.</strong></li>
+</ol>
 
         </div>
         <div id="footer">
