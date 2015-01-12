@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>CS162 Labs - Lab 1: Bash Scripting</title>
+        <link rel="stylesheet" type="text/css" href="../css/default.css" />
+    </head>
+    <body>
+        <div id="header">
+            <div id="logo">
+                <a href="../">CS162 Labs</a>
+            </div>
+            <div id="navigation">
+                <a href="../">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../contact.html">Contact</a>
+                <a href="../archive.html">Archive</a>
+            </div>
+        </div>
+
+        <div id="content">
+            <h1>Lab 1: Bash Scripting</h1>
+
+            <div class="info">
+    Posted on January 11, 2015
+    
+</div>
+
+<h2 id="writing-and-running-shell-scripts">Writing and running shell scripts</h2>
+<p>In class you have now had some exposure to bash commands. In this lab we will present you with several problems to solve using bash scripts to get you comfortable working in bash. These scripts should all have a preamble to help make them more useful. The main exercise today will get you working with <code>bash</code> arrays and string processing utilities.</p>
+<p>Bash scripting is about constructing your own commands that can be used on your system. For example:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cat</span> <span class="kw">&gt;</span> qed_echo.sh
+<span class="co">#!/bin/bash</span>
+
+<span class="kw">echo</span> <span class="st">&quot;Quod erat demonstrandum!&quot;</span></code></pre>
+<p>You can turn it into an executable script by changing the permissions:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">chmod</span> +x qed_echo.sh</code></pre>
+<p>and then you can run it:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">./qed_echo.sh</span></code></pre>
+<p>(Ungraded exercise before moving on: why do you have an <code>./</code> prepended to the name?)</p>
+<p>You can also add it to your path:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">export</span> <span class="ot">PATH=${PATH}</span>:<span class="kw">`pwd`</span></code></pre>
+<p>and then you can run it</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">qed_echo.sh</span></code></pre>
+<p>Commands can be “permanently” added to your <code>$PATH</code> environment variable by running a command similar to <code>export PATH=${PATH}:</code>pwd`<code>each time you start  up a terminal.  My preference is to make a folder</code><span class="math">$HOME/bin` that contains my scripts I want to just be able to run and I have the following line in my `$</span>HOME/.bashrc` file:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">export</span> <span class="ot">PATH=${PATH}</span>:<span class="ot">${HOME}</span>/bin</code></pre>
+<p>To make the script nice its good practice to include a header with an informative description:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">#!/bin/bash</span>
+<span class="co">#</span>
+<span class="co">#  qed_echo.sh</span>
+<span class="co">#  Mark Stoehr, 2015</span>
+<span class="co">#  </span>
+<span class="co">#  Display QED.</span>
+<span class="co">#</span></code></pre>
+<p>Scripts can also easily take command arguments. So the script above can be modified to take an argument by writing:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">echo</span> <span class="st">&quot;Quod era demonstrandum, </span><span class="ot">$1</span><span class="st">!&quot;</span></code></pre>
+<p>Although what happens if we don’t include an argument? We want the script to gracefully handle that case so we include a conditional</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">if [[</span> <span class="ot">$#</span> <span class="ot">-eq</span>  0<span class="kw"> ]]</span>; <span class="kw">then</span>
+    <span class="kw">echo</span> <span class="st">&quot;Quod erat demonstrandum!&quot;</span>
+<span class="kw">else</span>
+    <span class="kw">echo</span> <span class="st">&quot;Quod era demonstrandum, </span><span class="ot">$1</span><span class="st">!&quot;</span>
+<span class="kw">fi</span></code></pre>
+<p>Sometimes in <code>bash</code> we wish to perform a <code>map</code>-like operation over a “subtree” of the file system (remember the file system is not exactly a tree). This can be done by carefully studying what <code>ls</code> does. Google is your friend for <code>bash</code> utilities. This leads to exercise 1:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Write a bash script that takes two arguments: a command and a file. If the file is a regular file then the command should be applied to the file. Otherwise, if the file is a directory then the script should check all the files in the directory and apply the command to all regular files and expand/apply to all directories. Call the script <code>fsmap.sh</code>.</strong> (Warning this is not safe or good practice for an actual shell script but its informative for you to learn how to do it).</p></li>
+<li><p><strong>Write a script <code>list_contents.sh</code> that uses <code>fsmap.sh</code> to report the number of lines and words for all files within a subtree of the file system.</strong></p></li>
+</ol>
+<p>Another natural operation is a file system <code>fold</code> operation. You will find it useful to understand arithmetic expressions built from syntax like: <code>$(( ))</code> in <code>bash</code>:</p>
+<ol start="3" style="list-style-type: decimal">
+<li><p><strong>Write a script <code>fs_additive_fold.sh</code> that takes a command and a file as input. It shall recurse over the subtree that has the file as root (which will be a single file if the file is not a directory or link). The command is assumed to take a single file as input and output a number. The script should apply the command to all regular files in the subtree and add their outputs.</strong></p></li>
+<li><p><strong>Write a script <code>disk_usage.sh</code> which takes a file as input and outputs the total number of kilobytes used by that file or directory using <code>fs_additive_fold.sh</code>. Compare its output to what you get with <code>du</code> (and the correct flags: read the <code>man</code> page). Use <code>time</code> to profile their execution speeds on a system of directories (say your home directory on the lab machine) and put the outputs of <code>time</code> into your lab writeup <code>README</code> file included in your submission.</strong></p></li>
+</ol>
+<p>One issue with the above files is that they might run into cycles through symbolic links: see the command <code>ln</code>.</p>
+
+        </div>
+        <div id="footer">
+            Site proudly generated by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        </div>
+    </body>
+</html>
