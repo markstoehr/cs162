@@ -83,7 +83,7 @@
 <ol start="2" style="list-style-type: decimal">
 <li>Implement a destructor function. Call it <code>List_destroy</code> that frees the memory used by the list back up. The input should just be a pointer to a list <code>List *</code> and the list is possibly non-empty (i.e. may have some <code>ListNodes</code> in it).</li>
 </ol>
-<p>Lists are a compound type and we also need constructors and destructors for <code>ListNode</code>.</p>
+<p>Lists are a compound type and we also need constructors and destructors for <code>ListNode</code>. Note that the instances of <code>ListNode</code> contained in a list (e.g. the <code>head</code> or any other element) should always have a defined <code>succ</code> and <code>prec</code> field.</p>
 <ol start="3" style="list-style-type: decimal">
 <li>Implement a <code>ListNode_create</code> and <code>ListNode_destroy</code>.</li>
 </ol>
