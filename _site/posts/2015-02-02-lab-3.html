@@ -81,7 +81,7 @@
 } List;</code></pre>
 <p>This code tells the <code>C</code> compiler how to layout the memory for a doubly linked list. Note the use of <code>typedef</code> so that I don’t have to write <code>struct</code> many times through the code. Once you have these declarations <code>C</code> knows how to set the bits in memory, access their values, and interpret them. This code by itself is not very useful, however. We need to have some basic operations</p>
 <ol style="list-style-type: decimal">
-<li>Implement a list constructor function. Call it <code>List_create</code> and it should return a pointer to a list <code>List *</code> that is newly allocated. (You will need to do use exercise 3 here). Check for failures or if there are invariants that have been violated. A list should always have a <code>head</code> and each node in a list should have a <code>succ</code> and <code>prec</code> field that have a meaningful (non-NULL) reference. If these can’t be preserved then return a <code>NULL</code>.</li>
+<li>Implement a <code>ListNode_create</code> and <code>ListNode_destroy</code>. Again, if there is some problem return <code>NULL</code>.</li>
 </ol>
 <p>When you’re done processing a list it is good practice to cleanup memory (not doing so leads to memory leaks!) so</p>
 <ol start="2" style="list-style-type: decimal">
@@ -89,7 +89,7 @@
 </ol>
 <p>Lists are a compound type and we also need constructors and destructors for <code>ListNode</code>. Note that the instances of <code>ListNode</code> contained in a list (e.g. the <code>head</code> or any other element) should always have a defined <code>succ</code> and <code>prec</code> field.</p>
 <ol start="3" style="list-style-type: decimal">
-<li>Implement a <code>ListNode_create</code> and <code>ListNode_destroy</code>. Again, if there is some problem return <code>NULL</code>.</li>
+<li>Implement a list constructor function. Call it <code>List_create</code> and it should return a pointer to a list <code>List *</code> that is newly allocated. (You will need to do use exercise 3 here). Check for failures or if there are invariants that have been violated. A list should always have a <code>head</code> and each node in a list should have a <code>succ</code> and <code>prec</code> field that have a meaningful (non-NULL) reference. If these can’t be preserved then return a <code>NULL</code>.</li>
 </ol>
 <p>Instances of <code>ListNode</code> are only interesting when they are part of a list and should generally not be used independent of a given list.</p>
 <ol start="4" style="list-style-type: decimal">
