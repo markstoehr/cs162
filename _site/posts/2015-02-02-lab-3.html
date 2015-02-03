@@ -251,15 +251,17 @@
 <p>Now we turn our matrix representation into a monoid. I.e. we are going to endow our matrix representation with some operations. We will use a different algebraic structure than you may have seen before. But, fundamentally, we are working with familiar matrix multiplication.</p>
 <ol start="14" style="list-style-type: decimal">
 <li><p>Implement <code>Matrix_transpose</code> that makes the columns rows and the rows columns. Column <code>'A'</code> should be row <code>1</code>, column <code>'B'</code> should be row <code>2</code>, etc.</p></li>
-<li>Implement <code>Matrix_product</code> that takes two matrices and creates a new matrix with their product. The matrix product will be similar to the familiar one from high school however we make use of a different semi-ring operation, namely <code>( |, &amp; )</code> rather than <code>(+,*)</code>. That is if <span class="math"><em>C</em> = <em>A</em><em>B</em></span> then
+<li><p>Implement <code>Matrix_product</code> that takes two matrices and creates a new matrix with their product. The matrix product will be similar to the familiar one from high school however we make use of a different semi-ring operation, namely <code>( |, &amp; )</code> rather than <code>(+,*)</code>. That is if <span class="math"><em>C</em> = <em>A</em><em>B</em></span> then</p></li>
+</ol>
 <center>
 <br /><span class="math">$$ C_{i,j} = (A_{i,1} &amp; B_{1,j} ) | (A_{i,2} &amp; B_{2,j} ) | (A_{i,3} &amp; B_{3,j} ) | \cdots $$</span><br />
 </center>
-rather than
+<p>rather than</p>
 <center>
 <br /><span class="math">$$ C_{i,j} = (A_{i,1} &amp; B_{1,j} ) + (A_{i,2} * B_{2,j} ) + (A_{i,3} * B_{3,j} ) + \cdots $$</span><br />
-</center></li>
-<li><p>Create a program that takes an integer <code>n</code> generates two random matrices, prints them out one after another, and then prints out their boolean product.</p></li>
+</center>
+<ol start="16" style="list-style-type: decimal">
+<li>Create a program that takes an integer <code>n</code> generates two random matrices, prints them out one after another, and then prints out their boolean product.</li>
 </ol>
 
         </div>
